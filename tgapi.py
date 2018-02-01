@@ -3,6 +3,17 @@ import json
 
 domain = 'https://api.telegram.org/bot%s/'
 
+def read_token(_file):
+    return json.loads(open(_file).read())
+
+try:
+    token = read_token('settings.json')['token']
+except KeyError:
+    raise ValueError('Cannot continue without token! Provide it')
+else:
+    if not token:
+        raise ValueError('Token provided but its empty')
+
 def retry(fn):
     from time import sleep
     def wrapper(*args):
@@ -18,7 +29,7 @@ def retry(fn):
                 return ret
     return wrapper
 
-def set_webhook(token, self_domain_path: str, certificate):
+def set_webhook(self_domain_path: str, certificate):
     addr = {
         'api': domain % token,
         'method': 'setWebhook?',
@@ -28,7 +39,7 @@ def set_webhook(token, self_domain_path: str, certificate):
     return urlopen('{api}{method}{url}{cert}'.format(**addr))
 
 @retry
-def send_message(token, chatid, msg, reply_markup = ''):    
+def send_message(chatid, msg, reply_markup = ''):    
     addr = {
         'api': domain % token,
         'chatid': 'sendMessage?chat_id=%s' % chatid,
@@ -39,7 +50,7 @@ def send_message(token, chatid, msg, reply_markup = ''):
     return urlopen('{api}{chatid}{text}{reply}'.format(**addr))
 
 @retry
-def send_media_group(token, chat_id, media: list, caption = ''):
+def send_media_group(chat_id, media: list, caption = ''):
     for i, x in enumerate(media):
         media[i] = {'type': 'photo',
                     'media': x}
@@ -53,7 +64,7 @@ def send_media_group(token, chat_id, media: list, caption = ''):
     return urlopen('{api}{chatid}{media}{caption}'.format(**addr))
 
 @retry
-def send_photo(token, chat_id, photo, caption = '', reply = ''):
+def send_photo(chat_id, photo, caption = '', reply = ''):
     addr = {
         'api': domain % token,
         'method': 'sendPhoto?',
@@ -66,7 +77,7 @@ def send_photo(token, chat_id, photo, caption = '', reply = ''):
         '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
     )
 @retry
-def send_video(token, chat_id, video, caption = '', reply = ''):
+def send_video(chat_id, video, caption = '', reply = ''):
     addr = {
         'api': domain % token,
         'method': 'sendVideo?',
@@ -80,7 +91,7 @@ def send_video(token, chat_id, video, caption = '', reply = ''):
     )    
 
 @retry
-def send_document(token, chat_id, document, caption = '', reply = ''):
+def send_document(chat_id, document, caption = '', reply = ''):
     addr = {
         'api': domain % token,
         'method': 'sendVideo?',
@@ -94,7 +105,7 @@ def send_document(token, chat_id, document, caption = '', reply = ''):
     )    
 
 @retry
-def delete_message(token, chatid, messageid):
+def delete_message(chatid, messageid):
     addr = {
         'api': domain % token,
         'method': 'deleteMessage?',
@@ -104,7 +115,7 @@ def delete_message(token, chatid, messageid):
     return urlopen('{api}{method}{chatid}{msgid}'.format(**addr))    
 
 @retry    
-def addr_callback(token, callback, text = '', alert = False,
+def addr_callback(callback, text = '', alert = False,
                     url = '', cache_time = 15):
     addr = {
         'api': domain % token,
@@ -119,14 +130,14 @@ def addr_callback(token, callback, text = '', alert = False,
     return urlopen('{api}{chatid}{text}{alert}{url}{cache}'.format(**addr))
 
 @retry        
-def get_updates(token, offset):
+def get_updates(offset):
     return urlopen(
         domain % token + 'getUpdates?offset=%s' % offset
     ).read().decode('utf-8')
 
 @retry
-def get_me(token):
+def get_me():
     return urlopen(domain % token + 'getMe').read().decode('utf-8')
 
 if __name__ == '__main__':
-    print(get_me(input('Enter token: ')))
+    print(get_me())
