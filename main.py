@@ -51,17 +51,21 @@ def on_update(incoming, webhook = False, cooldown = 1):
     
     if commandsQ:
 
-        *commands, = filter(
-            lambda x:'message' in x and 'text' in x['message'],
-            filter(
-                lambda y: y['update_id'] > lastmsg, commandsQ['result']
-            ) if not webhook else [commandsQ]
-        )
+        commands = [
+            *filter(
+                lambda x:'message' in x and 'text' in x['message'],
+                filter(
+                    lambda y: y['update_id'] > lastmsg, commandsQ['result']
+                ) if not webhook else [commandsQ]
+            )            
+        ]
             
-        *callbacks, = filter(
-            lambda x: 'callback_query' in x,
-            commandsQ if webhook else commandsQ['result']
-        )
+        callbacks = [
+            *filter(
+                lambda x: 'callback_query' in x,
+                commandsQ if webhook else commandsQ['result']
+            )            
+        ]
     
         if commands:
             handle(commands)
