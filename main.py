@@ -1,8 +1,8 @@
 import time
 import json
 import re
-from tgapi.api import * 
-from tgkeyboard.keyboard import * 
+from .tgapi import * 
+from .tgkeyboard import * 
 
 lastmsg = 0
 message_handlers = []
