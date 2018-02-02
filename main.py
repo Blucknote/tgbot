@@ -72,16 +72,14 @@ def on_update(incoming, webhook = False, cooldown = 1):
         if commands:
             handle(commands)
         elif callbacks:
-            handle(callbacks, callbacks_handlers)
-        
+            handle(callbacks, callbacks_handlers)        
+    
+    if not webhook:
+        time.sleep(cooldown)
         lastmsg = max(
             map(lambda x: x['update_id'], commands if commands
                 else callbacks), default= lastmsg            
         )        
-    
-    if not webhook:
-        time.sleep(cooldown)
-    
 
 def start_server(port = 9696):
     from http.server import HTTPServer, BaseHTTPRequestHandler 
