@@ -59,10 +59,15 @@ def on_update(incoming, webhook = False, cooldown = 1):
                 ) if not webhook else [commandsQ]
             )            
         ]
-            
+        
+        key_check = (
+            commandsQ['callback_query'] if 'callback_query' in commandsQ
+            else None
+        )
+        
         callbacks = [
             *filter(lambda x: 'callback_query' in x, commandsQ['result'])            
-        ] if not webhook else commandsQ['callback_query']
+        ] if not webhook else key_check
     
         if commands:
             handle(commands)
