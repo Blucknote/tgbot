@@ -14,6 +14,8 @@ else:
     if not token:
         raise ValueError('Token provided but its empty')
 
+debugch = read_token('settings.json')['debugch']
+
 def retry(fn):
     from time import sleep
     def wrapper(*args):
