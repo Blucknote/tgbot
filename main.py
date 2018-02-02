@@ -47,9 +47,9 @@ def on_update(incoming, webhook = False, cooldown = 1):
     try:
         commandsQ = json.loads(incoming)
     except TypeError:
-        pass  #nonetype
+        commandsQ = None
     
-    if commandsQ:
+    if commandsQ is not None:
 
         commands = [
             *filter(
@@ -61,23 +61,22 @@ def on_update(incoming, webhook = False, cooldown = 1):
         ]
             
         callbacks = [
-            *filter(
-                lambda x: 'callback_query' in x,
-                commandsQ if webhook else commandsQ['result']
-            )            
-        ]
+            *filter(lambda x: 'callback_query' in x, commandsQ['result'])            
+        ] if not webhook else commandsQ['callback_query']
     
         if commands:
             handle(commands)
         elif callbacks:
             handle(callbacks, callbacks_handlers)
+        
+        lastmsg = max(
+            map(lambda x: x['update_id'], commands if commands
+                else callbacks), default= lastmsg            
+        )        
     
     if not webhook:
         time.sleep(cooldown)
-    lastmsg = max(
-        map(lambda x: x['update_id'], commands if commands
-            else callbacks), default= lastmsg            
-    )
+    
 
 def start_server(port = 9696):
     from http.server import HTTPServer, BaseHTTPRequestHandler 
