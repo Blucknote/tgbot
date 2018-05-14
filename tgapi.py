@@ -1,20 +1,13 @@
 from urllib.request import urlopen, quote
 import json
+import yaml
 
 domain = 'https://api.telegram.org/bot%s/'
 
-def read_token(_file):
-    return json.loads(open(_file).read())
+conf = yaml.load(open('conf.yml','r').read())
 
-try:
-    token = read_token('settings.json')['token']
-except KeyError:
-    raise ValueError('Cannot continue without token! Provide it')
-else:
-    if not token:
-        raise ValueError('Token provided but its empty')
-
-debugch = read_token('settings.json')['debugch']
+token = conf['token']
+debugch = conf['debugch']
 
 def retry(fn):
     from time import sleep
