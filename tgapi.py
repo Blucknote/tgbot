@@ -3,7 +3,7 @@ import json
 
 domain = 'https://api.telegram.org/bot%s/'
 
-conf = yaml.load(open(CONF_FILENAME,'r').read())
+conf = yaml.load(open('conf.yml','r').read())
 
 token = conf['token']
 debugch = conf['debugch']
