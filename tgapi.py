@@ -1,5 +1,6 @@
 from urllib.request import urlopen, quote
 import json
+import yaml
 
 domain = 'https://api.telegram.org/bot%s/'
 
