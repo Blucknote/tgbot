@@ -1,6 +1,8 @@
 import time
 import json
 import re
+import yaml
+
 from .tgapi import * 
 from .tgkeyboard import * 
 
@@ -106,3 +108,17 @@ def start_server(port = 9696):
     server_address = ('', port)
     httpd = HTTPServer(server_address, handler)
     httpd.serve_forever()
+
+def start(conffile = 'conf.yml'):
+    conf = yaml.load(open(conffile,'r').read())
+    if conf['webhook']:
+        response = tgapi.set_webhook('%s%s' % (conf['domain'],conf['token']), conf['ssl'])
+        print(response.read().decode('utf-8'))
+        start_server()
+    else:
+        #polling
+        tgapi.delete_webhook()
+        while True:
+            tgapi.on_update(
+                tgbot.get_updates(tgbot.lastmsg + 1)
+            )
