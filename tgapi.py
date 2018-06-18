@@ -27,6 +27,9 @@ def set_webhook(self_domain_path: str, certificate):
     }
     return urlopen('{api}{method}{url}{cert}'.format(**addr))
 
+def delete_webhook():
+    return urlopen('%sdeleteWebhook' % (domain % conf['token']))
+
 @retry
 def send_message(chatid, msg, reply_markup = ''):    
     addr = {
@@ -127,6 +130,7 @@ def get_updates(offset):
 @retry
 def get_me():
     return urlopen(domain % conf['token'] + 'getMe').read().decode('utf-8')
+
 
 if __name__ == '__main__':
     print(get_me())
