@@ -13,7 +13,7 @@ Make a conf.yml file looking like this
 token:
   "123456:ABC-DEF1234ghIkl-zyx57W2v1u123ew11" 
 debugch:
-  0       # not necesary. Used for redirecting bot answers. Can be user id or @channel
+  0       # Using for redirecting bot answers. Can be user id or @channel
 webhook:
   True    # if you want use webhooks you need this part
 domain:   # otherwise you can skip this part. Wrapper support polling
