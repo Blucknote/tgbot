@@ -119,6 +119,6 @@ def start(conffile = 'conf.yml'):
         #polling
         tgapi.delete_webhook()
         while True:
-            tgapi.on_update(
+            on_update(
                 tgbot.get_updates(tgbot.lastmsg + 1)
             )
