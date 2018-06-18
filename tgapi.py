@@ -126,7 +126,7 @@ def get_updates(offset):
 
 @retry
 def get_me():
-    return urlopen(domain % token + 'getMe').read().decode('utf-8')
+    return urlopen(domain % conf['token'] + 'getMe').read().decode('utf-8')
 
 if __name__ == '__main__':
     print(get_me())
