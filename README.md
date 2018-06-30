@@ -1,10 +1,9 @@
-## Instalation
+## Install
 clone this repo
 
 `git clone https://github.com/Blucknote/tgbot/`
 
-## Using
-### Configuration
+## Config
 
 [obtain token for your bot](https://core.telegram.org/bots/api#authorizing-your-bot)
 
@@ -22,7 +21,7 @@ ssl:
   "/etc/letsencrypt/live/your.domain/cert.pem" # path may be different
 ```
 
-### Code
+## Run
 ```
 import tgbot
 @tgbot.on_message(r'^/start$')
