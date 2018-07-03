@@ -24,6 +24,7 @@ ssl:
 ## Run
 ```
 import tgbot
+
 @tgbot.on_message(r'^/start$')
 def hello(message):
     tgbot.send_message(message['from']['id'], 'Hello!')
