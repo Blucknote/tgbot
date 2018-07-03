@@ -113,7 +113,7 @@ def start(conffile = 'conf.yml'):
     tgapi.conf = yaml.load(open(conffile,'r').read())
     if 'webhook' in tgapi.conf.keys():
         if tgapi.conf['webhook'] == True:
-            response = tgapi.set_webhook('%s%s' % (conf['domain'],conf['token']), conf['ssl'])
+            response = tgapi.set_webhook('%s%s' % (tgapi.conf['domain'],tgapi.conf['token']), tgapi.conf['ssl'])
             print(response.read().decode('utf-8'))
             start_server()
     else:
