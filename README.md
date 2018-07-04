@@ -22,7 +22,7 @@ ssl:
 ```
 
 ## Run
-```
+```python
 import tgbot
 
 @tgbot.on_message(r'^/start$')
