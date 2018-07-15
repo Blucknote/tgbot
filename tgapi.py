@@ -92,7 +92,7 @@ def send_video(chat_id, video, caption = '', reply = ''):
 def send_document(chat_id, document, caption = '', reply = ''):
     addr = {
         'api': domain % conf['token'],
-        'method': 'sendVideo?',
+        'method': 'sendDocument?',
         'channel': 'chat_id=%s' % chat_id,
         'document': '&document=%s' % document,
         'caption': '&caption=%s' % caption,
