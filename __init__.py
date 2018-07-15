@@ -120,7 +120,9 @@ def start(conffile = 'conf.yml'):
         if tgapi.conf['webhook'] == True:
             response = tgapi.set_webhook('%s%s' % (tgapi.conf['domain'],tgapi.conf['token']), tgapi.conf['ssl'])
             print(response.read().decode('utf-8'))
-            start_server()
+            start_server(
+                tgapi.conf['port'] if 'port' in tgapi.conf.keys() else 9696
+            )
         else:
             polling()
     else:
