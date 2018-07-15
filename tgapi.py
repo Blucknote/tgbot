@@ -4,21 +4,6 @@ import requests
 
 domain = 'https://api.telegram.org/bot%s/'
 
-def retry(fn):
-    from time import sleep
-    def wrapper(*args):
-        retries = 10
-        i = 0
-        while i < retries:
-            try:
-                ret = fn(*args)
-            except:
-                i += 1
-                sleep(3)
-            else:
-                return ret
-    return wrapper
-
 def set_webhook(self_domain_path: str, certificate):
     addr = {
         'api': domain % conf['token'],
@@ -31,7 +16,6 @@ def set_webhook(self_domain_path: str, certificate):
 def delete_webhook():
     return urlopen('%sdeleteWebhook' % (domain % conf['token']))
 
-@retry
 def send_message(chatid, msg, reply_markup = ''):    
     addr = {
         'api': domain % conf['token'],
@@ -42,7 +26,6 @@ def send_message(chatid, msg, reply_markup = ''):
     
     return urlopen('{api}{chatid}{text}{reply}'.format(**addr))
 
-@retry
 def send_media_group(chat_id, media: list, caption = ''):
     for i, x in enumerate(media):
         media[i] = {'type': 'photo',
@@ -56,7 +39,6 @@ def send_media_group(chat_id, media: list, caption = ''):
     }
     return urlopen('{api}{chatid}{media}{caption}'.format(**addr))
 
-@retry
 def send_photo(chat_id, photo, caption = '', reply = ''):
     addr = {
         'api': domain % conf['token'],
@@ -74,7 +56,6 @@ def send_photo(chat_id, photo, caption = '', reply = ''):
         return urlopen(
             '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
         )
-@retry
 def send_video(chat_id, video, caption = '', reply = ''):
     addr = {
         'api': domain % conf['token'],
@@ -88,7 +69,6 @@ def send_video(chat_id, video, caption = '', reply = ''):
         '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
     )    
 
-@retry
 def send_document(chat_id, document, caption = '', reply = ''):
     addr = {
         'api': domain % conf['token'],
@@ -102,7 +82,6 @@ def send_document(chat_id, document, caption = '', reply = ''):
         '{api}{method}{channel}{document}{caption}{reply}'.format(**addr)
     )    
 
-@retry
 def delete_message(chatid, messageid):
     addr = {
         'api': domain % conf['token'],
@@ -112,7 +91,6 @@ def delete_message(chatid, messageid):
     }
     return urlopen('{api}{method}{chatid}{msgid}'.format(**addr))    
 
-@retry    
 def addr_callback(callback, text = '', alert = False,
                     url = '', cache_time = 15):
     addr = {
@@ -127,13 +105,11 @@ def addr_callback(callback, text = '', alert = False,
     
     return urlopen('{api}{chatid}{text}{alert}{url}{cache}'.format(**addr))
 
-@retry        
 def get_updates(offset):
     return urlopen(
         domain % conf['token'] + 'getUpdates?offset=%s' % offset
     ).read().decode('utf-8')
 
-@retry
 def get_me():
     return urlopen(domain % conf['token'] + 'getMe').read().decode('utf-8')
 
