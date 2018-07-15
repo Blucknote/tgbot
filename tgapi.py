@@ -1,5 +1,6 @@
 from urllib.request import urlopen, quote
 import json
+import requests
 
 domain = 'https://api.telegram.org/bot%s/'
 
@@ -64,7 +65,11 @@ def send_photo(chat_id, photo, caption = '', reply = ''):
         'type': '&photo=%s' % photo,
         'caption': '&caption=%s' % caption,
         'reply': '&reply_markup=%s' % reply            
-    }    
+    }
+    if isinstance(photo, bytes):
+        requests.post(
+            '{api}{method}{channel}'.format(**addr), files = {'photo': photo}
+        )
     return urlopen(
         '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
     )
