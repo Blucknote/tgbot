@@ -70,9 +70,10 @@ def send_photo(chat_id, photo, caption = '', reply = ''):
         requests.post(
             '{api}{method}{channel}'.format(**addr), files = {'photo': photo}
         )
-    return urlopen(
-        '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
-    )
+    else:
+        return urlopen(
+            '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
+        )
 @retry
 def send_video(chat_id, video, caption = '', reply = ''):
     addr = {
