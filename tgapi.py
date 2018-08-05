@@ -1,6 +1,7 @@
 from urllib.request import urlopen, quote
 import json
 import yaml
+import fire
 
 domain = 'https://api.telegram.org/bot%s/'
 
@@ -136,3 +137,4 @@ def get_me():
 
 if __name__ == '__main__':
     print(get_me())
+    fire.Fire()
