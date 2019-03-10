@@ -3,8 +3,8 @@ import json
 import re
 import yaml
 
-from .tgapi import * 
-from .tgkeyboard import * 
+import tgapi
+import tgkeyboard
 
 lastmsg = 0
 message_handlers = []
@@ -31,7 +31,7 @@ def on_callback(data):
 
 def handle(recieved, handlers=message_handlers):
     if len(recieved) > 1:
-        if type(recieved) is not dict:      #we got few messages at once
+        if not isinstance(recieved, dict):      #we got few messages at once
             messages = [msg['message'] for msg in recieved]  #throwing useless
         else:
             messages = [recieved]
