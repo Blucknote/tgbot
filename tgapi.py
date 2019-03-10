@@ -80,9 +80,14 @@ def send_video(chat_id, video, caption='', reply=''):
         'reply': '&reply_markup=%s' % reply
     }
 
-    return requests.get(
-        '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
-    ).json()
+    if isinstance(video, bytes):
+        requests.post(
+            '{api}{method}{channel}'.format(**addr), files={'video': video}
+        )
+    else:
+        return requests.get(
+            '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
+            ).json()
 
 
 def send_document(chat_id, document, caption='', reply=''):
@@ -95,9 +100,14 @@ def send_document(chat_id, document, caption='', reply=''):
         'reply': '&reply_markup=%s' % reply
     }
 
-    return requests.get(
-        '{api}{method}{channel}{document}{caption}{reply}'.format(**addr)
-    ).json()
+    if isinstance(document, bytes):
+        requests.post(
+            '{api}{method}{channel}'.format(**addr), files={'docunent': document}
+        )
+    else:
+        return requests.get(
+            '{api}{method}{channel}{document}{caption}{reply}'.format(**addr)
+        ).json()
 
 
 def delete_message(chatid, messageid):
