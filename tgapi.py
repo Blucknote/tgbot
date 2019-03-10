@@ -63,7 +63,7 @@ def send_photo(chat_id, photo, caption='', reply=''):
     if isinstance(photo, bytes):
         requests.post(
             '{api}{method}{channel}'.format(**addr), files={'photo': photo}
-        )
+        ).json()
     else:
         return requests.get(
             '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
@@ -83,7 +83,7 @@ def send_video(chat_id, video, caption='', reply=''):
     if isinstance(video, bytes):
         requests.post(
             '{api}{method}{channel}'.format(**addr), files={'video': video}
-        )
+        ).json()
     else:
         return requests.get(
             '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
@@ -103,7 +103,7 @@ def send_document(chat_id, document, caption='', reply=''):
     if isinstance(document, bytes):
         requests.post(
             '{api}{method}{channel}'.format(**addr), files={'docunent': document}
-        )
+        ).json()
     else:
         return requests.get(
             '{api}{method}{channel}{document}{caption}{reply}'.format(**addr)
