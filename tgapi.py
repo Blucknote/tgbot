@@ -1,4 +1,4 @@
-from urllib.request import urlopen, quote
+from urllib.request import quote
 import json
 import yaml
 import fire
@@ -17,11 +17,11 @@ def set_webhook(self_domain_path: str, certificate):
         'cert': '&certificate=%s' % open(certificate, 'r'),
     }
 
-    return urlopen('{api}{method}{url}{cert}'.format(**addr))
+    return requests.get('{api}{method}{url}{cert}'.format(**addr)).json()
 
 
 def delete_webhook():
-    return urlopen('%sdeleteWebhook' % (domain % conf['token']))
+    return requests.get('%sdeleteWebhook' % (domain % conf['token'])).json()
 
 
 def send_message(chatid, msg, reply_markup=''):
@@ -32,7 +32,7 @@ def send_message(chatid, msg, reply_markup=''):
         'reply': '&reply_markup=%s' % reply_markup
     }
 
-    return urlopen('{api}{chatid}{text}{reply}'.format(**addr))
+    return requests.get('{api}{chatid}{text}{reply}'.format(**addr)).json()
 
 
 def send_media_group(chat_id, media: list, caption=''):
@@ -47,7 +47,7 @@ def send_media_group(chat_id, media: list, caption=''):
         'caption': '&caption=%s' % caption
     }
 
-    return urlopen('{api}{chatid}{media}{caption}'.format(**addr))
+    return requests.get('{api}{chatid}{media}{caption}'.format(**addr)).json()
 
 
 def send_photo(chat_id, photo, caption='', reply=''):
@@ -65,9 +65,9 @@ def send_photo(chat_id, photo, caption='', reply=''):
             '{api}{method}{channel}'.format(**addr), files={'photo': photo}
         )
     else:
-        return urlopen(
+        return requests.get(
             '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
-        )
+        ).json()
 
 
 def send_video(chat_id, video, caption='', reply=''):
@@ -80,9 +80,9 @@ def send_video(chat_id, video, caption='', reply=''):
         'reply': '&reply_markup=%s' % reply
     }
 
-    return urlopen(
+    return requests.get(
         '{api}{method}{channel}{type}{caption}{reply}'.format(**addr)
-    )
+    ).json()
 
 
 def send_document(chat_id, document, caption='', reply=''):
@@ -95,9 +95,9 @@ def send_document(chat_id, document, caption='', reply=''):
         'reply': '&reply_markup=%s' % reply
     }
 
-    return urlopen(
+    return requests.get(
         '{api}{method}{channel}{document}{caption}{reply}'.format(**addr)
-    )    
+    ).json()
 
 
 def delete_message(chatid, messageid):
@@ -107,8 +107,8 @@ def delete_message(chatid, messageid):
         'chatid': 'chat_id=%s' % chatid,
         'msgid': '&message_id=%s' % messageid,
     }
-    
-    return urlopen('{api}{method}{chatid}{msgid}'.format(**addr))
+
+    return requests.get('{api}{method}{chatid}{msgid}'.format(**addr)).json()
 
 
 def addr_callback(callback, text='', alert=False, url='', cache_time=15):
@@ -122,17 +122,17 @@ def addr_callback(callback, text='', alert=False, url='', cache_time=15):
         'cache': '&cache_time=%s' % cache_time,         
     }
 
-    return urlopen('{api}{chatid}{text}{alert}{url}{cache}'.format(**addr))
+    return requests.get('{api}{chatid}{text}{alert}{url}{cache}'.format(**addr)).json()
 
 
 def get_updates(offset):
-    return urlopen(
+    return requests.get(
         domain % conf['token'] + 'getUpdates?offset=%s' % offset
-    ).read().decode('utf-8')
+    ).json()
 
 
 def get_me():
-    return urlopen(domain % conf['token'] + 'getMe').read().decode('utf-8')
+    return requests.get(domain % conf['token'] + 'getMe').json()
 
 
 if __name__ == '__main__':
