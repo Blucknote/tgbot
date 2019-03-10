@@ -10,6 +10,7 @@ lastmsg = 0
 message_handlers = []
 callbacks_handlers = []
 
+
 def on_message(text):
     def wrapper(fn):
         def inner(message):
@@ -17,6 +18,7 @@ def on_message(text):
                 return(fn(message))
         return inner
     return wrapper
+
 
 def on_callback(data):
     def wrapper(fn):
@@ -26,7 +28,8 @@ def on_callback(data):
         return inner
     return wrapper
 
-def handle(recieved, handlers = message_handlers):
+
+def handle(recieved, handlers=message_handlers):
     if len(recieved) > 1:
         if type(recieved) is not dict:      #we got few messages at once
             messages = [msg['message'] for msg in recieved]  #throwing useless
@@ -44,13 +47,14 @@ def handle(recieved, handlers = message_handlers):
             elif 'callback_query' in recieved[0]:
                 handler(recieved[0]['callback_query'])
 
-def on_update(incoming, webhook = False, cooldown = 1):
+
+def on_update(incoming, webhook=False, cooldown=1):
     global lastmsg
     try:
         commandsQ = json.loads(incoming)
     except TypeError:
         commandsQ = None
-    
+
     if commandsQ is not None:
 
         commands = [
@@ -61,31 +65,32 @@ def on_update(incoming, webhook = False, cooldown = 1):
                 ) if not webhook else [commandsQ]
             )            
         ]
-        
+
         key_check = (
             commandsQ['callback_query'] if 'callback_query' in commandsQ
             else None
         )
-        
+
         callbacks = [
             *filter(lambda x: 'callback_query' in x, commandsQ['result'])            
         ] if not webhook else key_check
-    
+
         if commands:
             handle(commands)
         elif callbacks:
             handle(callbacks, callbacks_handlers)        
-    
+
     if not webhook:
         time.sleep(cooldown)
         lastmsg = max(
             map(lambda x: x['update_id'], commands if commands
-                else callbacks), default= lastmsg            
+                else callbacks), default=lastmsg            
         )        
 
-def start_server(port = 9696):
+
+def start_server(port=9696):
     from http.server import HTTPServer, BaseHTTPRequestHandler 
-    
+
     class handler(BaseHTTPRequestHandler):
         def _set_headers(self):
             self.send_response(200)
@@ -95,21 +100,22 @@ def start_server(port = 9696):
         def do_GET(self):
             self._set_headers()
             self.wfile.write('get response')
-    
+
         def do_HEAD(self):
             self._set_headers()
-    
+
         def do_POST(self):
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length).decode('utf-8')
             on_update(post_data, True)
             self._set_headers()
-    
+
     server_address = ('', port)
     httpd = HTTPServer(server_address, handler)
     httpd.serve_forever()
 
-def start(conffile = 'conf.yml'):
+
+def start(conffile='conf.yml'):
     tgapi.conf = yaml.load(open(conffile,'r').read())
     if 'webhook' in tgapi.conf.keys():
         if tgapi.conf['webhook'] == True:
