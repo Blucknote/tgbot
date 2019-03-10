@@ -118,14 +118,17 @@ def start_server(port=9696):
 def polling():
     tgapi.delete_webhook()
     while True:
-        on_update(get_updates(lastmsg + 1))    
+        on_update(tgapi.get_updates(lastmsg + 1))    
 
 
-def start(conffile = 'conf.yml'):
+def start(conffile='conf.yml'):
     tgapi.conf = yaml.load(open(conffile,'r').read())
     if 'webhook' in tgapi.conf.keys():
-        if tgapi.conf['webhook'] == True:
-            response = tgapi.set_webhook('%s%s' % (tgapi.conf['domain'],tgapi.conf['token']), tgapi.conf['ssl'])
+        if tgapi.conf['webhook']:
+            response = tgapi.set_webhook(
+                '%s%s' %
+                (tgapi.conf['domain'], tgapi.conf['token']), tgapi.conf['ssl']
+             )
             print(response.read().decode('utf-8'))
             start_server(
                 tgapi.conf['port'] if 'port' in tgapi.conf.keys() else 9696
