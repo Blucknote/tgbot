@@ -129,7 +129,7 @@ def addr_callback(callback, text='', alert=False, url='', cache_time=15):
         'text': '&text=%s' % quote(text),
         'alert': '&show_alert=%s' % alert,
         'url': '&url=%s' % url,
-        'cache': '&cache_time=%s' % cache_time,         
+        'cache': '&cache_time=%s' % cache_time,
     }
 
     return requests.get('{api}{chatid}{text}{alert}{url}{cache}'.format(**addr)).json()
