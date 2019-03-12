@@ -61,7 +61,7 @@ def send_photo(chat_id, photo, caption='', reply=''):
     }
 
     if isinstance(photo, bytes):
-        requests.post(
+        return requests.post(
             '{api}{method}{channel}'.format(**addr), files={'photo': photo}
         ).json()
     else:
@@ -81,7 +81,7 @@ def send_video(chat_id, video, caption='', reply=''):
     }
 
     if isinstance(video, bytes):
-        requests.post(
+        return requests.post(
             '{api}{method}{channel}'.format(**addr), files={'video': video}
         ).json()
     else:
@@ -101,7 +101,7 @@ def send_document(chat_id, document, caption='', reply=''):
     }
 
     if isinstance(document, bytes):
-        requests.post(
+        return requests.post(
             '{api}{method}{channel}'.format(**addr), files={'docunent': document}
         ).json()
     else:
