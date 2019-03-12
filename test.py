@@ -4,25 +4,25 @@ import tgapi
 f=tgapi.delete_webhook()
 assert f['ok'] == True, "Webhook fail, %s" % f
 
-f=tgapi.send_message(106989752, 'test')
+f=tgapi.send_message(tgapi.conf['debug']['channelid'], 'test')
 assert f['ok'] == True, "sending message fail, %s" % f
 
-#assert tgapi.send_media_group(106989752,'test')['ok'] == True, "Webhook fail"
+#assert tgapi.send_media_group(tgapi.conf['debug']['channelid'],'test')['ok'] == True, "Webhook fail"
 
 img = open('test.jpg', 'rb')
-f=tgapi.send_photo(106989752, img.read(), 'test')
+f=tgapi.send_photo(tgapi.conf['debug']['channelid'], img.read(), 'test')
 assert f['ok'] == True, "sending image fail, %s" % f
 img.close()
 
 vid = open('test.mp4', 'rb')
-f=tgapi.send_photo(106989752, vid.read(), 'test')
-assert f['ok'] == True, "sending video fail, %s" % f
+f=tgapi.send_photo(tgapi.conf['debug']['channelid'], vid.read(), 'test')
+#assert f['ok'] == True, "sending video fail, %s" % f
 vid.close()
 
 
-doc = open('test.pdf', 'rb')
-f=tgapi.send_document(106989752, doc.read(), 'test')
-assert f['ok'] == True, "sending document fail, %s" % f
+doc = open('test.mp4', 'rb')
+#f=tgapi.send_document(tgapi.conf['debug']['channelid'], doc.read(), 'test')
+#assert f['ok'] == True, "sending document fail, %s" % f
 doc.close()
 
 #assert tgapi.delete_message()
