@@ -1,4 +1,4 @@
-settings.json
 .vscode
 conf.yml
 __pycache__
+.mypy_cache

@@ -3,8 +3,8 @@ import json
 import re
 import yaml
 
-from .tgapi import * 
-from .tgkeyboard import * 
+import tgapi
+import tgkeyboard
 
 lastmsg = 0
 message_handlers = []
@@ -31,7 +31,7 @@ def on_callback(data):
 
 def handle(recieved, handlers=message_handlers):
     if len(recieved) > 1:
-        if type(recieved) is not dict:      #we got few messages at once
+        if not isinstance(recieved, dict):      #we got few messages at once
             messages = [msg['message'] for msg in recieved]  #throwing useless
         else:
             messages = [recieved]
@@ -118,14 +118,17 @@ def start_server(port=9696):
 def polling():
     tgapi.delete_webhook()
     while True:
-        on_update(get_updates(lastmsg + 1))    
+        on_update(tgapi.get_updates(lastmsg + 1))    
 
 
-def start(conffile = 'conf.yml'):
+def start(conffile='conf.yml'):
     tgapi.conf = yaml.load(open(conffile,'r').read())
     if 'webhook' in tgapi.conf.keys():
-        if tgapi.conf['webhook'] == True:
-            response = tgapi.set_webhook('%s%s' % (tgapi.conf['domain'],tgapi.conf['token']), tgapi.conf['ssl'])
+        if tgapi.conf['webhook']:
+            response = tgapi.set_webhook(
+                '%s%s' %
+                (tgapi.conf['domain'], tgapi.conf['token']), tgapi.conf['ssl']
+             )
             print(response.read().decode('utf-8'))
             start_server(
                 tgapi.conf['port'] if 'port' in tgapi.conf.keys() else 9696
