@@ -14,16 +14,16 @@ f=tgapi.send_photo(tgapi.conf['debug']['channelid'], img.read(), 'test')
 assert f['ok'] == True, "sending image fail, %s" % f
 img.close()
 
-vid = open('test.mp4', 'rb')
-f=tgapi.send_photo(tgapi.conf['debug']['channelid'], vid.read(), 'test')
+#vid = open('test.mp4', 'rb')
+#f=tgapi.send_photo(tgapi.conf['debug']['channelid'], vid.read(), 'test')
 #assert f['ok'] == True, "sending video fail, %s" % f
-vid.close()
+#vid.close()
 
 
-doc = open('test.mp4', 'rb')
+#doc = open('test.mp4', 'rb')
 #f=tgapi.send_document(tgapi.conf['debug']['channelid'], doc.read(), 'test')
 #assert f['ok'] == True, "sending document fail, %s" % f
-doc.close()
+#doc.close()
 
 #assert tgapi.delete_message()
 
