@@ -26,6 +26,7 @@ before_script:
   - pip install -r requirements.txt
   - apk add gettext curl
   - envsubst < blank_conf.yml > conf.yml
+  - cat conf.yml
   - curl 'https://upload.wikimedia.org/wikipedia/commons/d/db/Patern_test.jpg' --output test.jpg
 
 test:
