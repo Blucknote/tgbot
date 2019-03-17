@@ -102,7 +102,7 @@ def send_document(chat_id, document, caption='', reply=''):
 
     if isinstance(document, bytes):
         return requests.post(
-            '{api}{method}{channel}'.format(**addr), files={'upload_file': document}
+            '{api}{method}{channel}'.format(**addr), files={'document': document}
         ).json()
     else:
         return requests.get(
