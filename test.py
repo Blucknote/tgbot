@@ -20,7 +20,7 @@ assert f['ok'] == True, "sending video fail, %s" % f
 vid.close()
 
 
-doc = open('test.mp4', 'rb')
+doc = open('test.pdf', 'rb')
 f=tgapi.send_document(tgapi.conf['debug']['channelid'], doc.read(), 'test')
 assert f['ok'] == True, "sending document fail, %s" % f
 doc.close()
