@@ -48,7 +48,7 @@ def handle(recieved, handlers=message_handlers):
                 handler(recieved[0]['callback_query'])
 
 
-def on_update(incoming, webhook=False, cooldown=1):
+def dispatcher(incoming, webhook=False, cooldown=1):
     global lastmsg
     try:
         commandsQ = json.loads(incoming)
@@ -107,7 +107,7 @@ def start_server(port=9696):
         def do_POST(self):
             content_length = int(self.headers['Content-Length'])
             post_data = self.rfile.read(content_length).decode('utf-8')
-            on_update(post_data, True)
+            dispatcher(post_data, True)
             self._set_headers()
 
     server_address = ('', port)
@@ -118,7 +118,7 @@ def start_server(port=9696):
 def polling():
     tgapi.delete_webhook()
     while True:
-        on_update(tgapi.get_updates(lastmsg + 1))    
+        dispatcher(tgapi.get_updates(lastmsg + 1))    
 
 
 def start(conffile='conf.yml'):
