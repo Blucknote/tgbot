@@ -11,24 +11,6 @@ message_handlers = []
 callbacks_handlers = []
 
 
-def on_message(text):
-    def wrapper(fn):
-        def inner(message):
-            if re.findall(text, message['text']):
-                return(fn(message))
-        return inner
-    return wrapper
-
-
-def on_callback(data):
-    def wrapper(fn):
-        def inner(callback):
-            if re.findall(data, callback['data']):
-                return(fn(callback))
-        return inner
-    return wrapper
-
-
 def handle(recieved, handlers=message_handlers):
     if len(recieved) > 1:
         if not isinstance(recieved, dict):      #we got few messages at once
