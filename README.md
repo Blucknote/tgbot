@@ -14,8 +14,9 @@ token:
 debugch:
   0       # Unnecesary. Using for redirecting bot answers. Can be user id or @channel
 webhook:
-  True    # if you want use webhooks you need this part
-domain:   # otherwise you can skip this part. Polling will be used instead
+  True    # Set this to True if you want to. If not polling will be used instead
+# below this comment using for webhooks support. You can skip if polling.
+domain:  
   "https://your.domain/"
 ssl:
   "/etc/letsencrypt/live/your.domain/cert.pem" # path may be different
