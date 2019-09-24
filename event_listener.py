@@ -1,6 +1,10 @@
+import json
+import time
+
 import yaml
 from . import tgapi
 
+lastmsg = 0
 message_handlers = []
 callbacks_handlers = []
 
@@ -24,31 +28,26 @@ def handle(recieved, handlers=message_handlers):
                 handler(recieved[0]['callback_query'])
 
 
-def dispatcher(incoming, webhook=False, cooldown=1):
+def dispatcher(updates, webhook=False, cooldown=1):
     global lastmsg
-    try:
-        commandsQ = json.loads(incoming)
-    except TypeError:
-        commandsQ = None
-
-    if commandsQ is not None:
+    if updates is not None:
 
         commands = [
             *filter(
                 lambda x:'message' in x and 'text' in x['message'],
                 filter(
-                    lambda y: y['update_id'] > lastmsg, commandsQ['result']
-                ) if not webhook else [commandsQ]
+                    lambda y: y['update_id'] > lastmsg, updates['result']
+                ) if not webhook else [updates]
             )            
         ]
 
         key_check = (
-            commandsQ['callback_query'] if 'callback_query' in commandsQ
+            updates['callback_query'] if 'callback_query' in updates
             else None
         )
 
         callbacks = [
-            *filter(lambda x: 'callback_query' in x, commandsQ['result'])            
+            *filter(lambda x: 'callback_query' in x, updates['result'])            
         ] if not webhook else key_check
 
         if commands:
@@ -56,11 +55,18 @@ def dispatcher(incoming, webhook=False, cooldown=1):
         elif callbacks:
             handle(callbacks, callbacks_handlers)        
 
+    else:
+        commands = [{'update_id': 0}]
+        callbacks = [{'update_id': 0}]
+
     if not webhook:
         time.sleep(cooldown)
         lastmsg = max(
-            map(lambda x: x['update_id'], commands if commands
-                else callbacks), default=lastmsg            
+            map(
+                lambda x: x.get('update_id', 0),
+                commands if commands else callbacks
+            ),
+            default=lastmsg            
         )        
 
 

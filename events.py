@@ -1,3 +1,5 @@
+import re
+
 def on_message(text):
     def wrapper(fn):
         def inner(message):
