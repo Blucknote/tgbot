@@ -3,7 +3,9 @@ import json
 import re
 import yaml
 
-import tgapi
-import tgkeyboard
+from . import tgapi
+from . import tgkeyboard
+from . import event_listener
+from . import events
 
 lastmsg = 0

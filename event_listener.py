@@ -1,3 +1,6 @@
+import yaml
+from . import tgapi
+
 message_handlers = []
 callbacks_handlers = []
 

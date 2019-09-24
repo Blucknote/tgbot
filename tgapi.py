@@ -1,12 +1,12 @@
 from urllib.request import quote
 import json
-import yaml
+#import yaml
 import fire
 import requests
 
 domain = 'https://api.telegram.org/bot%s/'
 
-conf = yaml.load(open('conf.yml', 'r').read())
+# conf = yaml.load(open('conf.yml', 'r').read())
 
 
 def set_webhook(self_domain_path: str, certificate):
