@@ -23,13 +23,14 @@ ssl:
 
 ## Run
 ```python
-import tgbot
+from tgbot import event_listener
+from tgbot import events
+from tgbot import tgapi
 
-@tgbot.on_message(r'^/start$')
+@events.on_message(r'^/hello$')
 def hello(message):
-    tgbot.send_message(message['from']['id'], 'Hello!')
+    tgapi.send_message(message['from']['id'], 'Hello!')
 
-tgbot.message_handlers.extend([hello])
-    
-tgbot.start()
+event_listener.message_handlers.extend((hello,))
+event_listener.start(r'conf.yml')
 ```
